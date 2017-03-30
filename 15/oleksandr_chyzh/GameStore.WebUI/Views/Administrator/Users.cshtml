@@ -1,0 +1,60 @@
+﻿@model List<GameStore.WebUI.ViewModels.User.UserViewModel>
+
+@using System.Globalization
+@using GameStore.WebUI.Authorization
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Users;
+}
+
+<div class="row">
+    @Html.ActionLink(Resource.New, "Register", new { Controller = "Administrator" }, new { @class = "btn-orange create-btn col-md-12 col-xs-12 col-sm-12" })
+</div>
+
+<div class="flex-container" data-div="3">
+    @foreach (var user in Model)
+    {
+        <div class="item-box">
+            <dl>
+                <dt>@Resource.Name</dt>
+                <dd>@user.UserName</dd>
+            </dl>
+            <dl>
+                <dt>@Resource.BannedTo</dt>
+                <dd>@user.BanExpiryDate.ToString(CultureInfo.InvariantCulture)</dd>
+            </dl>
+
+            <dl>
+                <dt>@Resource.Roles</dt>
+                <dd>
+                    @{
+                        string roles = string.Empty;
+                        for (var i = 0; i < user.Roles.Count; i++)
+                        {
+                            roles += user.Roles[i];
+
+                            if (i != user.Roles.Count - 1)
+                            {
+                                roles += ", ";
+                            }
+                        }
+                    }
+                    @roles
+                </dd>
+            </dl>
+
+            @Html.ActionLink(Resource.Update, "UpdateUser", new { Controller = "Administrator", userId = user.UserId })<br />
+            @if (user.UserId != (User as IUserPrincipal).Id)
+            {
+                @Html.ActionLink(Resource.Delete, "DeleteUser", new { Controller = "Administrator", userId = user.UserId })<br />
+            }
+            
+        </div>
+    }
+</div>
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}

@@ -1,0 +1,44 @@
+﻿@model List<GameStore.WebUI.Models.Purchase>
+@using Resources    
+@{
+    ViewBag.Title = Resource.Basket;
+}
+
+<div class="row display-form">
+    @if (Model == null || Model.Count == 0)
+    {
+        <span>@Resource.BasketIsEmpty</span>
+    }
+    else
+    {
+        for (var i = 0; i < Model.Count; i++)
+        {
+            <div>
+                @Html.LabelFor(m => m[i].GameName)<br />
+                <span>@Model[i].GameName</span><br /><br />
+
+                @Html.LabelFor(m => m[i].Price)<br />
+                <span>@Model[i].Price</span><br /><br />
+
+                @Html.LabelFor(m => m[i].Quantity)<br />
+                <input type="number" class="form-control" value="@Model[i].Quantity" name="[@i].quantity" data-game-id="@Model[i].GameId" data-is-change-quantity-control="true" />
+
+                <br /><br />
+            </div>
+        }
+
+        <span>@Resource.TotalPrice: </span><span id="total-price">@Model.Sum(p => p.Price * p.Quantity)</span>
+        <br /><br />
+    }
+
+    @if (Model != null && Model.Count > 0)
+    {
+        @Html.ActionLink(Resource.MakeOrder, "MakeOrder")
+    }
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/Custom/getCurrentOrderDetails.js"></script>
+}
+

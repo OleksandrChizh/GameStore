@@ -1,0 +1,26 @@
+﻿@model GameStore.WebUI.ViewModels.Genre.DeleteGenreViewModel
+
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Deleting;
+}
+
+<div class="display-form">
+    <h2>@Resource.DeletingGenre: @Model.Name</h2>
+    <h4>@Resource.DeletingSubGenresMessage: </h4>
+    @foreach (var subgenre in Model.SubGenres)
+    {
+        <span>@subgenre</span><br />
+    }
+
+    @using (Html.BeginForm("DeleteConfirmed", "Genre", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+
+        <input type="submit" class="btn-blue" value=@Resource.Accept />
+        @Html.ActionLink(Resource.Cancel, "GetAll", new { Controller = "Genre" }, new { @class = "btn-orange" })
+    }
+</div>

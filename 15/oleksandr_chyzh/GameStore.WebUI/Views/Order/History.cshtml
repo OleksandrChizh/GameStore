@@ -1,0 +1,90 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Order.HistoryViewModel
+
+@{
+    ViewBag.Title = Resource.History;
+}
+
+<div id="leftPanel" class="col-md-4">
+    @using (Html.BeginForm("History", "Order", FormMethod.Get, new { id = "filterForm" }))
+    {      
+        @Html.ValidationSummary(true)
+
+        <span>@Resource.DateRange</span><br /><br />
+        @Html.LabelFor(m => m.DateFrom)<br />
+        @Html.EditorFor(m => m.DateFrom, new { htmlAttributes = new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}$", placeholder = "dd.mm.yyyy" } })<br />
+        @Html.ValidationMessageFor(m => m.DateFrom)<br />
+
+        @Html.LabelFor(m => m.DateTo)<br />
+        @Html.EditorFor(m => m.DateTo, new { htmlAttributes = new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}$", placeholder = "dd.mm.yyyy" } })<br />
+        @Html.ValidationMessageFor(m => m.DateTo)<br />
+       
+        <input class="btn-orange" type="submit" id="filter" value=@Resource.Filter />
+    }
+</div>
+
+<div class="col-md-8">
+    <div class="flex-container" data-div="2">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="item-box">
+                <dl>
+                    <dt>@Resource.Identifier</dt>
+                    <dd>@order.Id</dd>
+                </dl>
+
+                <dl>
+                    <dt>@Resource.CustomerIdentifier</dt>
+                    <dd>@order.CustomerId</dd>
+                </dl>
+
+                <dl>
+                    <dt>@Resource.OrderDate</dt>
+                    @if (order.OrderDate == default(DateTime))
+                    {
+                        <dd>-</dd>
+                    }
+                    else
+                    {
+                        <dd>@order.OrderDate</dd>
+                    }
+                </dl>
+
+                <dl>
+                    <dt>@Resource.PayingDate</dt>
+                    @if (order.PayingDate == default(DateTime))
+                    {
+                        <dd>-</dd>
+                    }
+                    else
+                    {
+                        <dd>@order.PayingDate</dd>
+                    }
+                </dl>
+
+                <dl>
+                    <dt>@Resource.ShippedDate</dt>
+                    @if (order.ShippedDate == default(DateTime))
+                    {
+                        <dd>-</dd>
+                    }
+                    else
+                    {
+                        <dd>@order.ShippedDate</dd>
+                    }
+                </dl>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/Custom/serializedFilterForm.js"></script>
+}
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}
+

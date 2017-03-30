@@ -1,0 +1,111 @@
+﻿@using GameStore.WebUI.Authorization
+@using GameStore.WebUI.Utils
+@using Resources
+@model GameStore.WebUI.ViewModels.Game.GameViewModel
+
+@{
+    ViewBag.Title = Model.Key;
+}
+
+@{
+    var canUserComment = (!Model.IsDeleted && (User.IsInRole("Guest") || (User.IsInRole("User") && (User as IUserPrincipal).BanExpiryDate < DateTime.UtcNow))) || User.IsInRole("Moderator");
+}
+
+<input type="text" hidden="hidden" value=@Model.Key id="game-key" />
+<input type="text" hidden="hidden" value=@Model.Id id="game-id" />
+<input type="text" hidden="hidden" value=@canUserComment.ToString() id="can-user-comment" />
+
+<input type="text" hidden="hidden" value=@Resource.Hide id="hide-resource" />
+<input type="text" hidden="hidden" value=@Resource.Quote id="quote-resource" />
+<input type="text" hidden="hidden" value=@Resource.Answer id="answer-resource" />
+<input type="text" hidden="hidden" value=@Resource.Send id="send-resource" />
+<input type="text" hidden="hidden" value=@Resource.Body id="body-resource" />
+<input type="text" hidden="hidden" value=@Resource.NewComment id="new-comment-resource" />
+<input type="text" hidden="hidden" value=@Resource.Comments id="comments-resource" />
+<input type="text" hidden="hidden" value=@Resource.CommentsForGame id="comments-for-game-resource" />
+<input type="text" hidden="hidden" value=@Resource.BanMessage id="ban-message-resource" />
+<input type="text" hidden="hidden" value=@Resource.RepliedTo id="replied-to-resource" />
+<input type="text" hidden="hidden" value=@Resource.CommentWasDeleted id="comment-was-deleted-resource" />
+
+<div class="display-form">
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Key)<br />
+        <span>@Model.Key</span><br /><br />
+
+        @Html.LabelFor(m => m.Name)<br />
+        <span>@Model.Name</span><br /><br />
+
+        @Html.LabelFor(m => m.Description)<br />
+        <span>@Model.Description</span><br /><br />
+
+        @Html.LabelFor(m => m.ViewsCount)<br />
+        <span>@Model.ViewsCount</span><br /><br />
+
+        @Html.LabelFor(m => m.PublishingDate)<br />
+        <span>@Model.PublishingDate</span><br /><br />
+
+        @Html.LabelFor(m => m.AddingDate)<br />
+        <span>@Model.AddingDate</span><br /><br />
+
+        @Html.LabelFor(m => m.Price)<br />
+        <span>@Model.Price</span><br /><br />
+
+        @Html.LabelFor(m => m.UnitsInStock)<br />
+        <span>@Model.UnitsInStock</span><br /><br />
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Genres)<br />
+        @Html.CreateGenreTree(Model.Genres)<br />
+
+        @Html.LabelFor(m => m.PlatformTypes)<br />
+        <ul>
+            @foreach (var platformType in Model.PlatformTypes)
+            {
+                <li>@platformType</li>
+            }
+        </ul>
+
+        @Html.LabelFor(m => m.Publishers)<br />
+        @if (Model.Publishers.Count == 0)
+        {
+            <p>@Resource.Unknown</p>
+        }
+        else
+        {
+            <ul>
+                @foreach (var publisher in Model.Publishers)
+                {
+                    <li>@Html.ActionLink(publisher, "GetPublisherByCompanyName", new { Controller = "Publisher", companyName = publisher })</li>
+                }
+            </ul>
+        }
+    </div>
+
+    <div class="col-md-4">
+        @if (!Model.IsDeleted)
+        {
+            @Html.ActionLink(Resource.Download, "Download", null, new { target = "_blank", @class = "hidden-sm hidden-xs" })<br />
+        }
+
+        @if (User.IsInRole("User") && !Model.IsDeleted)
+        {
+            @Html.ActionLink(Resource.Buy, "Buy", new { Controller = "Basket", gameKey = Model.Key })<br /><br />
+        }
+        
+        @Html.ActionLink(Resource.ToCommentsPage, "Comments", new { Controller = "Comment", gameKey = Model.Key })<br />
+        @Html.ActionLink(Resource.Comments, "Comments", new { Controller = "Comment", gameKey = Model.Id }, new { id = "comments-link" })<br /><br />
+        
+        <div id="comments"></div>
+    </div>
+</div>
+
+@section styles 
+{
+    <link href="~/Content/CustomStyles/comments.css" rel="stylesheet" />  
+}
+
+@section scripts
+{      
+    <script src="~/Scripts/Custom/comments.js"></script>
+}

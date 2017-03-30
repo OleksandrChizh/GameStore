@@ -1,0 +1,20 @@
+﻿@model GameStore.WebUI.ViewModels.User.UserViewModel
+
+@using Resources
+
+@{
+    ViewBag.Title = Resource.DeletingUser;
+}
+
+<div class="display-form">
+    <h2>@Resource.DeletingUserMessage: @Model.UserName?</h2>
+
+    @using (Html.BeginForm("DeleteUserConfirmed", "Administrator"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.UserId)
+
+        <input class="btn-blue" type="submit" value=@Resource.Yes />
+        @Html.ActionLink(Resource.No, "Users", new { Controller = "Administrator" }, new { @class = "btn-orange" })
+    }
+</div>

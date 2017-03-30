@@ -1,0 +1,60 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Game.UpdateGameViewModel
+
+@{
+    ViewBag.Title = Resource.Updating;
+}
+
+<div class="form-container">
+    @using (Html.BeginForm("Update", "Game", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(m => m.GameId)
+
+        @Html.LabelFor(m => m.Name)<br />
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Name)<br />
+
+        @Html.LabelFor(m => m.Description)<br />
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "5" })<br />
+        @Html.ValidationMessageFor(m => m.Description)<br />
+
+        @Html.LabelFor(m => m.Price)<br />
+        @Html.EditorFor(m => m.Price, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Price)<br />
+
+        @Html.LabelFor(m => m.UnitsInStock)<br />
+        @Html.EditorFor(m => m.UnitsInStock, new { htmlAttributes = new { @class = "form-control" } })
+        <br /><br />
+
+        @Html.LabelFor(m => m.Discounted)<br />
+        @Html.EditorFor(m => m.Discounted)
+        <br /><br />
+
+        @Html.LabelFor(m => m.PlatformTypeIds)<br />
+        @Html.ListBoxFor(m => m.PlatformTypeIds, Model.AllPlatformTypes, new { @class = "selectpicker" })<br />
+        @Html.ValidationMessageFor(m => m.PlatformTypeIds)<br />
+
+        @Html.LabelFor(m => m.PublisherIds)<br />
+        @Html.ListBoxFor(m => m.PublisherIds, Model.AllPublishers, new { @class = "selectpicker" })<br />
+        @Html.ValidationMessageFor(m => m.PublisherIds)<br />
+
+        @Html.LabelFor(m => m.GenreIds)<br />
+        @Html.ListBoxFor(m => m.GenreIds, Model.AllGenres, new { @class = "selectpicker" })<br />
+        @Html.ValidationMessageFor(m => m.GenreIds)<br />
+
+        @Html.LabelFor(m => m.IsContainEnglishTranslation)<br />
+        @Html.EditorFor(m => m.IsContainEnglishTranslation)<br />
+
+        @Html.LabelFor(m => m.EnglishName)<br />
+        @Html.EditorFor(m => m.EnglishName, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.EnglishName)<br />
+
+        @Html.LabelFor(m => m.Description)<br />
+        @Html.TextAreaFor(m => m.EnglishDescription, new { @class = "form-control", rows = "5" })<br />
+        @Html.ValidationMessageFor(m => m.EnglishDescription)<br /><br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Update />
+    }
+</div>

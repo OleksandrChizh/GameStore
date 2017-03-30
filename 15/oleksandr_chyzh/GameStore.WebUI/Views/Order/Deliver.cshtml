@@ -1,0 +1,11 @@
+﻿@using Resources
+
+@{
+    ViewBag.Title = Resource.OrderShipped;
+}
+
+<div class="display-form">
+    <h1>@Resource.OrderShipped</h1>
+
+    @Html.ActionLink(Resource.ToHomePage, "GetAll", new { Controller = "Game" })
+</div>

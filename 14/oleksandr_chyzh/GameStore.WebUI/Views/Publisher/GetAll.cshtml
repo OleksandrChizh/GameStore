@@ -1,0 +1,32 @@
+﻿@using Resources
+@model List<GameStore.WebUI.ViewModels.Publisher.ShortPublisherViewModel>
+
+@{
+    ViewBag.Title = Resource.Publishers;
+}
+
+<div class="row">
+    @Html.ActionLink(Resource.Create, "New", new { Controller = "Publisher" }, new { @class = "btn-orange col-md-12 create-btn col-xs-12 col-sm-12" })        
+</div>
+
+<div class="flex-container" data-div="3">
+    @foreach (var publisher in Model)
+    {
+        <div class="item-box">
+            <dl>
+                <dt>@Resource.CompanyName</dt>
+                <dd>@publisher.CompanyName</dd>
+            </dl>
+
+            @Html.ActionLink(Resource.Details, "GetPublisherByCompanyName", new { Controller = "Publisher", companyName = publisher.CompanyName })<br />
+            @Html.ActionLink(Resource.Update, "Update", new { Controller = "Publisher", companyName = publisher.CompanyName })<br />
+            @Html.ActionLink(Resource.Delete, "Delete", new { Controller = "Publisher", companyName = publisher.CompanyName })<br />
+
+        </div>
+    }
+</div>
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}

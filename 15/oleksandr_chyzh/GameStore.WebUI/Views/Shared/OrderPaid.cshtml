@@ -1,0 +1,16 @@
+﻿@using Resources
+
+@{
+    ViewBag.Title = Resource.PaymentResult;
+}
+
+<div class="display-form">
+    <h1>@Resource.OrderPaid</h1>
+
+    @Html.ActionLink(Resource.ToHomePage, "GetAll", new { Controller = "Game" }, new { id = "to-home-page-link" })
+</div>
+
+@section scripts
+{
+   <script src="~/Scripts/Custom/resetBasketBox.js"></script> 
+}

@@ -1,0 +1,68 @@
+﻿.flex-container {
+    display: inline-flex;
+    flex-flow: row wrap;
+    align-content: stretch;
+    width: 100%;
+}
+
+.item-box {
+    color: white;
+    padding: 10px 5%;
+    background-color: #1a3560;
+}
+
+.flex-container[data-div='2'] .item-box {
+    width: 50%;
+}
+
+.flex-container[data-div='3'] .item-box {
+    width: 33.33333333333%;
+}
+
+@media screen and (max-width: 480px) {
+    .item-box {
+        width: 100%;
+    }
+}
+
+.item-box dt {
+    font-weight: 100;
+    color: #ffa500;
+}
+
+.item-box a {
+    color: #ffa500;
+}
+
+.create-btn {
+    padding: 2%;
+    margin: 0;
+    border-radius: 0;
+    text-align: center;
+}
+
+.flex-container[data-div='3'] .item-box:nth-child(2n + 1),
+.flex-container[data-div='2'] .item-box:nth-child(4n),
+.flex-container[data-div='2'] .item-box:nth-child(4n + 1) {
+    background-color: #335a88;
+}
+
+#leftPanel span,
+#leftPanel label {
+    font-weight: 100;
+    color: #ffffff;
+}
+
+#leftPanel .checkbox-value,
+#leftPanel .radio label,
+#leftPanel input[type=text],
+#leftPanel input[type=number],
+#leftPanel input[type=checkbox] {
+    color: #808080;
+}
+
+#leftPanel form {
+    padding: 5%;
+    background-color: #1a3560;
+    color: #ffffff;
+}

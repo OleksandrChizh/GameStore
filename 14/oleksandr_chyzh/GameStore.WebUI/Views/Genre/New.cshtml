@@ -1,0 +1,21 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Genre.CreateGenreViewModel
+
+@{
+    ViewBag.Title = Resource.New;
+}
+
+<div class="form-container">
+    @using (Html.BeginForm("New", "Genre"))
+    {
+        @Html.LabelFor(m => m.Name)<br />
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Name)<br />
+
+        @Html.LabelFor(m => m.ParentGenreId)<br />
+        @Html.DropDownListFor(m => m.ParentGenreId, Model.Genres, new { @class = "form-control" })
+        <br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Create />
+    }
+</div>

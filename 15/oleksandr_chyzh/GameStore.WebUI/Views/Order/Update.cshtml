@@ -1,0 +1,30 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Order.ShortOrderViewModel
+
+@{
+    ViewBag.Title = Resource.Updating;
+}
+
+<div class="form-container">
+    @using (Html.BeginForm("Update", "Order"))
+    {
+        @Html.HiddenFor(m => m.Id)
+
+        @Html.LabelFor(m => m.CustomerId)<br />
+        @Html.DisplayFor(m => m.CustomerId)<br /><br />
+
+        @Html.LabelFor(m => m.OrderDate)<br />
+        @Html.TextBoxFor(m => m.OrderDate, new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}\s(\d{2}:){2}\d{2}$", placeholder = "dd.mm.yyyy hh:MM:ss" })<br />
+        @Html.ValidationMessageFor(m => m.OrderDate)<br />
+
+        @Html.LabelFor(m => m.PayingDate)<br />
+        @Html.TextBoxFor(m => m.PayingDate, new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}\s(\d{2}:){2}\d{2}$", placeholder = "dd.mm.yyyy hh:MM:ss" })<br />
+        @Html.ValidationMessageFor(m => m.PayingDate)<br />
+
+        @Html.LabelFor(m => m.ShippedDate)<br />
+        @Html.TextBoxFor(m => m.ShippedDate, new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}\s(\d{2}:){2}\d{2}$", placeholder = "dd.mm.yyyy hh:MM:ss" })<br />
+        @Html.ValidationMessageFor(m => m.ShippedDate)<br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Update />
+    }
+</div>

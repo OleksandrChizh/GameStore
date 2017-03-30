@@ -1,0 +1,17 @@
+﻿@model GameStore.WebUI.ViewModels.User.UpdateManagerViewModel
+@using Resources
+
+@{
+    ViewBag.Title = Resource.ManagingAccount;
+}
+
+<div class="display-form">
+    <h2>@Resource.ManagingAccount</h2>
+
+    @using (Html.BeginForm("ManageAccount", "Authorization", FormMethod.Post))
+    {
+        @Html.EnumDropDownListFor(m => m.Type, new { @class = "form-control" })<br />
+
+        <input class="btn-orange btn-without-left-right-margin" type="submit" value=@Resource.Save />
+    }
+</div>

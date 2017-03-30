@@ -1,0 +1,59 @@
+﻿@using GameStore.Services.Interfaces.Enums
+@using Resources
+@model List<GameStore.WebUI.Models.Purchase>
+@{
+    ViewBag.Title = Resource.Order;
+}
+
+<div class="row display-form">
+    @if (Model == null || Model.Count == 0)
+    {
+        <span>@Resource.BasketIsEmpty</span>
+    }
+    else
+    {
+        foreach (var purchase in Model)
+        {
+            <label>@Resource.Name</label><br />
+            <span>@purchase.GameName</span><br /><br />
+
+            <label>@Resource.Price</label><br />
+            <span>@purchase.Price</span><br /><br />
+
+            <label>@Resource.Quantity</label><br />
+            <span>@purchase.Quantity</span><br /><br />
+        }
+
+        <span>@Resource.TotalPrice: @Model.Sum(p => p.Price * p.Quantity)</span><br />
+    }
+
+    <h2>@Resource.Payment</h2>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table col-md-6">
+            <tr>
+                <th></th>
+                <th class="hidden-sm hidden-xs">@Resource.Name</th>
+                <th class="hidden-sm hidden-xs">@Resource.Description</th>
+                <th></th>
+            </tr>
+
+            @PaymentMethodRow("/Content/Images/invoice.gif", Resource.Bank, Resource.PayUsingInvoiceFile, PaymentType.Bank)
+            @PaymentMethodRow("/Content/Images/ibox.jpg", Resource.IBox, Resource.PayViaIBoxTerminal, PaymentType.IBox)
+            @PaymentMethodRow("/Content/Images/visa.jpg", Resource.Visa, Resource.PayViaBankSite, PaymentType.Visa)
+        </table>
+    }
+
+    @helper PaymentMethodRow(string src, string title, string description, PaymentType type)
+    {
+    <tr>
+        <td>
+            <img src=@src width="100" height="100" alt=@type.ToString() />
+        </td>
+        <td class="hidden-sm hidden-xs">@title</td>
+        <td class="hidden-sm hidden-xs">@description</td>
+        <td>@Html.ActionLink(Resource.SaveOrder, "SaveOrder", new { @type })</td>
+    </tr>
+}
+</div>

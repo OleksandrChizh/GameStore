@@ -1,0 +1,17 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Publisher.PublisherViewModel
+
+@{
+    ViewBag.Title = Resource.Publisher;
+}
+
+<div class="display-form">
+    @Html.LabelFor(m => m.CompanyName)<br />
+    <span>@Model.CompanyName</span><br /><br />
+
+    @Html.LabelFor(m => m.Description)<br />
+    <span>@Model.Description</span><br /><br />
+
+    @Html.LabelFor(m => m.HomePage)<br />
+    <span>@Model.HomePage</span><br /><br />
+</div>

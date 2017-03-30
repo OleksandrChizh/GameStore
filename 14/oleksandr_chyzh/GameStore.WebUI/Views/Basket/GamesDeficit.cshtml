@@ -1,0 +1,19 @@
+﻿@model IDictionary<string, short>
+@using Resources
+@{
+    ViewBag.Title = Resource.Error;
+}
+
+<div class="display-form">
+    <h2>@Resource.GamesNotEnoughForOrderMaking</h2>
+
+    <dl>
+        @foreach (var gameDeficit in Model)
+        {
+            <dt>@gameDeficit.Key</dt>
+            <dd>@gameDeficit.Value</dd>
+        }
+    </dl>
+
+    @Html.ActionLink(Resource.ToBasket, "GetCurrentOrderDetails")
+</div>

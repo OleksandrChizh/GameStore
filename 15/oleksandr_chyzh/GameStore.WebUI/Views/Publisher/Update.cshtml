@@ -1,0 +1,35 @@
+﻿@using Resources
+
+@model GameStore.WebUI.ViewModels.Publisher.PublisherViewModel
+
+@{
+    ViewBag.Title = Resource.Updating;
+}
+
+<div class="form-container">
+    @using (Html.BeginForm("Update", "Publisher", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CompanyName)
+
+        @Html.LabelFor(m => m.CompanyName)<br />
+        @Html.DisplayFor(m => m.CompanyName)<br /><br />
+
+        @Html.LabelFor(m => m.Description)<br />
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })<br />
+        @Html.ValidationMessageFor(m => m.Description)<br />
+
+        @Html.LabelFor(m => m.HomePage)<br />
+        @Html.EditorFor(m => m.HomePage, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.HomePage)<br />
+
+        @Html.LabelFor(m => m.IsContainEnglishTranslation)<br />
+        @Html.EditorFor(m => m.IsContainEnglishTranslation)<br />
+
+        @Html.LabelFor(m => m.Description)<br />
+        @Html.TextAreaFor(m => m.EnglishDescription, new { @class = "form-control" })<br />
+        @Html.ValidationMessageFor(m => m.EnglishDescription)<br /><br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Update />
+    }
+</div>

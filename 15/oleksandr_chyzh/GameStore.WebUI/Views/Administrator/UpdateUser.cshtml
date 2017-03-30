@@ -1,0 +1,27 @@
+﻿@model GameStore.WebUI.ViewModels.Administrator.UpdateUserViewModel
+
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Updating;
+}
+
+<div class="display-form">
+    <h2>@Resource.UpdatingUser: @Model.UserName</h2>
+</div>
+
+<div class="form-container">
+    @using (Html.BeginForm("UpdateUser", "Administrator"))
+    {
+        @Html.HiddenFor(m => m.Id)
+
+        @Html.LabelFor(m => m.BanExpiryDate)<br />
+        @Html.TextBoxFor(m => m.BanExpiryDate, new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}\s(\d{2}:){2}\d{2}$", placeholder = "dd.mm.yyyy hh:MM:ss" })<br />
+        @Html.ValidationMessageFor(m => m.BanExpiryDate)<br />
+
+        @Html.LabelFor(m => m.SelectedRoles)<br />
+        @Html.ListBoxFor(m => m.SelectedRoles, Model.Roles, new { @class = "selectpicker" })<br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Update />
+    }
+</div>

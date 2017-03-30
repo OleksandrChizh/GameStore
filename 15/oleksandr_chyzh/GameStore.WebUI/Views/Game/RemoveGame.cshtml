@@ -1,0 +1,21 @@
+﻿@using Resources
+@model GameStore.WebUI.Models.Game.DeleteGameModel
+
+@{
+    ViewBag.Title = Resource.Deleting;
+}
+
+<div class="display-form">
+    <h2>@Resource.DeletingGame: @Model.Name</h2>
+
+    @using (Html.BeginForm("Remove", "Game", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+
+        <input type="submit" class="btn-blue" value=@Resource.Accept />
+        @Html.ActionLink(Resource.Cancel, "GetAll", new { Controller = "Game" }, new { @class = "btn-orange" })
+    }
+</div>
+

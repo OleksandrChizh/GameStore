@@ -1,0 +1,78 @@
+﻿@using GameStore.WebUI.Authorization
+@using Resources
+@model GameStore.WebUI.ViewModels.Comment.CommentsViewModel
+@{
+    ViewBag.Title = Resource.CommentsForGame + $" {Model.GameKey}";
+}
+
+<div class="display-form">
+    <h1>@Resource.CommentsForGame: @Html.ActionLink(Model.GameName, "GetGameByKey", new { Controller = "Game", gamekey = Model.GameKey })</h1>
+
+    @if (User.IsInRole("User") && (User as IUserPrincipal).BanExpiryDate >= DateTime.UtcNow)
+    {
+        <h2>@Resource.BanMessage: @((User as IUserPrincipal).BanExpiryDate.ToShortDateString())</h2><br />
+    }
+    
+    <input type="hidden" value=@Model.GameKey id="game-key" />
+    <input type="hidden" value=@Resource.Cancel id="cancel-resource" />
+    <input type="hidden" value=@Resource.Delete, id="delete-resource" />
+
+    <ul id="comments-container">
+        @foreach (var comment in Model.Comments)
+        {
+            <li class="dinamicContainer">
+                @if (string.IsNullOrWhiteSpace(comment.RepliedTo) == false)
+                {
+                    <i><sub>@Resource.RepliedTo @comment.RepliedTo</sub></i><br />
+                }
+                @if (comment.IsQuote)
+                {
+                    if (string.IsNullOrWhiteSpace(comment.Quote))
+                    {
+                        <blockquote>@Resource.CommentWasDeleted</blockquote>
+                    }
+                    else
+                    {
+                        <blockquote>&ldquo;@comment.Quote&rdquo;</blockquote>
+                    }
+                }
+                <b>@comment.Name:</b><span> @comment.Body</span><br />
+
+                @if ((!Model.IsGameDeleted && (User.IsInRole("Guest") ||
+                                               (User.IsInRole("User") && (User as IUserPrincipal).BanExpiryDate < DateTime.UtcNow))) || User.IsInRole("Moderator"))
+                {
+                    @Html.ActionLink(Resource.Quote, "", null, new { data_is_answer_to_comment_link = true, data_parent_comment_id = comment.Id, data_game_key = Model.GameKey, data_is_quote = true })
+                    <span>&nbsp;</span>
+                    @Html.ActionLink(Resource.Answer, "", null, new { data_is_answer_to_comment_link = true, data_parent_comment_id = comment.Id, data_game_key = Model.GameKey, data_is_quote = false })
+                    <span>&nbsp;</span>
+                }
+
+                @if (User.IsInRole("Moderator"))
+                {
+                    @Html.ActionLink(Resource.Delete, "", null, new { data_is_delete_comment_link = true, data_comment_id = comment.Id })
+                    <span>&nbsp;</span>
+                    @Html.ActionLink(Resource.Ban, "Ban", new { Controller = "Moderator", userName = comment.Name })
+                }
+
+                <br /><br />
+            </li>
+        }
+    </ul>
+
+    @*@if ((!Model.IsGameDeleted && (User.IsInRole("Guest") || (User.IsInRole("User") && (User as IUserPrincipal).BanExpiryDate < DateTime.UtcNow))) || User.IsInRole("Moderator"))
+    {
+        <div data-is-create-comment-form="true">
+            @Html.Action("NewComment", "Comment", new { gameKey = Model.GameKey, isQuote = false })
+        </div>
+    }*@
+</div>
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/comments.css" rel="stylesheet" />
+}
+
+@section scripts
+{    
+    <script src="~/Scripts/Custom/comments.js"></script>
+}

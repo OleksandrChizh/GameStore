@@ -1,0 +1,20 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.PlatformType.PlatformTypeViewModel
+
+@{
+    ViewBag.Title = Resource.Deleting;
+}
+
+<div class="display-form">
+    <h2>@Resource.DeletingPlatformType: @Model.Type</h2>
+
+    @using (Html.BeginForm("DeleteConfirmed", "PlatformType", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+
+        <input type="submit" class="btn-blue" value=@Resource.Accept />
+        @Html.ActionLink(Resource.Cancel, "GetAll", new { Controller = "PlatformType" }, new { @class = "btn-orange" })
+    }
+</div>

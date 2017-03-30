@@ -1,0 +1,22 @@
+﻿@model GameStore.WebUI.ViewModels.User.LoginViewModel
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Entrance;
+}
+
+<div class="row form-container">
+    @using (Html.BeginForm("Login", "Authorization"))
+    {
+        @Html.LabelFor(m => m.Email)<br />
+        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Email)<br />
+
+        @Html.LabelFor(m => m.Password)<br />
+        @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Password)<br /><br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Login />
+    }
+</div>
+

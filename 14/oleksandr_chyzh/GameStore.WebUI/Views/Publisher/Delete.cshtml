@@ -1,0 +1,20 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Publisher.ShortPublisherViewModel
+
+@{
+    ViewBag.Title = Resource.Deleting;
+}
+
+<div class="display-form">
+    <h2>@Resource.DeletingPublisher: @Model.CompanyName</h2>
+
+    @using (Html.BeginForm("DeleteConfirmed", "Publisher", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+
+        <input type="submit" class="btn-blue" value=@Resource.Accept />
+        @Html.ActionLink(Resource.Cancel, "GetAll", new { Controller = "Publisher" }, new { @class = "btn-orange" })
+    }
+</div>

@@ -1,0 +1,39 @@
+﻿@using Resources
+@model List<GameStore.WebUI.ViewModels.Genre.GenreViewModel>
+
+@{
+    ViewBag.Title = Resource.Genres;
+}
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+<div class="row">
+    @Html.ActionLink(Resource.Create, "New", new { Controller = "Genre" }, new { @class = "btn-orange create-btn col-md-12 col-xs-12 col-sm-12" })
+</div>
+
+<div class="flex-container" data-div="3">
+    @foreach (var genre in Model)
+    {
+        <div class="item-box">
+            <dl>
+                <dt>@Resource.Name</dt>
+                <dd>@genre.Name</dd>
+            </dl>
+
+            @Html.ActionLink(Resource.Subgenres, "GetSubgenresModal", new { genre.Id }, new { @class = "modal-link" })<br />
+            @Html.ActionLink(Resource.Delete, "Delete", new { Controller = "Genre", id = genre.Id })<br />
+        </div>
+    }
+</div>
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}
+
+@section scripts
+{    
+    <script src="~/Scripts/Custom/modal.js"></script>
+}

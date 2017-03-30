@@ -1,0 +1,24 @@
+﻿@model IEnumerable<string> 
+
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Roles;
+}
+
+<div class="flex-container" data-div="3">
+    @foreach (var role in Model)
+    {
+        <div class="item-box">
+            <dl>
+                <dt>@Resource.Name</dt>
+                <dd>@role</dd>
+            </dl>
+        </div>
+    }
+</div>
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}

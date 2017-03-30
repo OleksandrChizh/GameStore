@@ -1,0 +1,29 @@
+﻿@model GameStore.WebUI.ViewModels.Administrator.AdministratorRegisterViewModel
+
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Registration;
+}
+
+<div class="form-container">
+    @using (Html.BeginForm("Register", "Administrator"))
+    {
+        @Html.LabelFor(m => m.Email)<br />
+        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Email)<br />
+
+        @Html.LabelFor(m => m.Password)<br />
+        @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Password)<br />
+
+        @Html.LabelFor(m => m.ConfirmPassword)<br />
+        @Html.EditorFor(m => m.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.ConfirmPassword)<br />
+
+        @Html.LabelFor(m => m.SelectedRoles)<br />
+        @Html.ListBoxFor(m => m.SelectedRoles, Model.Roles, new { @class = "selectpicker" })<br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Register />
+    }
+</div>

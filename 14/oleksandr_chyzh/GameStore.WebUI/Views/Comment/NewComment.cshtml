@@ -1,0 +1,38 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Comment.CreateCommentViewModel
+
+@if (Model.IsQuote)
+{
+    <h4>@Resource.Quote</h4>
+}
+else
+{
+    if (Model.ParentCommentId != null)
+    {
+        <h4>@Resource.Answer</h4>
+    }
+    else
+    {
+        <h4>@Resource.NewComment</h4>
+    }
+}
+
+@using (Html.BeginForm("NewComment", "Comment", FormMethod.Post, new { data_is_comment_form = true }))
+{
+    @Html.HiddenFor(m => m.GameKey)
+    @Html.HiddenFor(m => m.IsQuote)
+
+    if (Model.ParentCommentId != null)
+    {
+        @Html.HiddenFor(m => m.ParentCommentId)
+    }
+
+    @Html.LabelFor(m => m.Body)<br />
+    @Html.TextAreaFor(m => m.Body, new { @class = "form-control", rows = 5 })<br />
+    @Html.ValidationMessageFor(m => m.Body)<br />
+
+    <input class="btn-orange" type="submit" value=@Resource.Send data-is-async-send-button="true" />
+}
+
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/Custom/newComment.js"></script>

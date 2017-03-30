@@ -1,0 +1,191 @@
+﻿@using System.Web.Optimization;
+@using GameStore.WebUI.Authorization
+@using Resources
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/layout/css")
+    @RenderSection("styles", false)
+</head>
+<body>
+
+<header>     
+    <div id="top-menu" class="row">
+        <div class="col-md-2 hidden-xs hidden-sm"></div>
+        <div class="col-md-7 col-xs-12 col-sm-12">
+            <b>@Html.ActionLink("PROFILE", "GetAll", new {Controller = "Game"})</b>
+            @if (User.IsInRole("User"))
+            {
+                <div id="basket" class="btn btn-default">
+                    <i class='glyphicon glyphicon-shopping-cart'></i> 
+                    <span></span>
+                </div>
+            }
+        </div>
+        <div class="col-md-3 hidden-xs hidden-sm">
+            <a href="https://www.instagram.com" target="_blank"><img src="~/Content/Images/icon-instagram.png" alt="Instagram" /></a>
+            <a href="https://www.facebook.com" target="_blank"><img src="~/Content/Images/icon-facebook.png" alt="Facebook" /></a>
+            <a href="https://twitter.com" target="_blank"><img src="~/Content/Images/icon-twitter.png" alt="Twitter" /></a>
+        </div>
+    </div>
+    <div id="middle-menu" class="row hidden-xs hidden-sm">
+        <div class="col-md-2"></div>
+        <div class="col-md-6" align="right">
+            <span>admin@youremail.com.au</span>
+        </div>
+        <div class="col-md-4">
+            <a href="tel:130-055-5555"><img src="~/Content/Images/icon-phone.png" alt="Calling"/></a><!--
+            --><span>1300 555 555</span>
+        </div>
+    </div>
+    <div id="bottom-menu" class="row">
+        <div class="col-md-2 hidden-xs hidden-sm"></div>
+        <div class="col-md-10 col-sm-12 col-xs-12">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink(Resource.ToHomePage, "GetAll", new { Controller = "Game" }, new { @class = "navbar-brand home-page" })
+                </div>
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <li>@Html.ActionLink(Resource.History, "History", new { Controller = "Order" })</li>
+                            <li>@Html.ActionLink(Resource.Orders, "Orders", new { Controller = "Order" })</li>
+                            <li>@Html.ActionLink(Resource.Publishers, "GetAll", new { Controller = "Publisher" })</li>
+                            <li>@Html.ActionLink(Resource.PlatformTypes, "GetAll", new { Controller = "PlatformType" })</li>
+                            <li>@Html.ActionLink(Resource.Genres, "GetAll", new { Controller = "Genre" })</li>
+                        }
+                        
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li>@Html.ActionLink(Resource.Users, "Users", new { Controller = "Administrator" })</li>
+                            <li>@Html.ActionLink(Resource.Roles, "Roles", new { Controller = "Administrator" })</li>
+                        }
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        @if (Request.HttpMethod != "POST")
+                        {
+                            <li class="hidden-xs hidden-sm"><a>@Resource.TotalAmountOfGameForSite: @Html.Action("GetAmountOfGames", "Game")</a></li>
+                        }
+
+                        @if ((User as IUserPrincipal).IsNotInRole("Guest"))
+                        {
+                            <li><a>@Resource.Name: @((User as UserPrincipal).Identity.Name)</a></li>
+                            <li>@Html.ActionLink(Resource.Logout, "Logout", new {Controller = "Authorization"})</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink(Resource.Login, "Login", new {Controller = "Authorization"})</li>
+                            <li>@Html.ActionLink(Resource.Registration, "Register", new {Controller = "Authorization"})</li>
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    
+    @RenderSection("middleHeader", false)
+    @RenderSection("bottomHeader", false)
+
+</header>
+
+<main class="row">
+    <div class="col-md-2 hidden-xs hidden-sm"></div>
+    <div class="col-md-8 col-xs-12 col-sm-12">        
+        @RenderBody()      
+    </div>
+    <div class="col-md-2 hidden-xs hidden-sm"></div>
+</main>
+
+<footer>
+    <div id="top-footer" class="row hidden-xs hidden-sm">
+        <div class="col-md-4">
+            <span>About Us</span>
+            <ul>
+                <li>Financial Planning Courses</li>
+                <li>Diploma Financial Planning</li>
+                <li>RG146 Compllant Life Insurance</li>
+                <li>RG146 Compllant Supperannuation</li>
+                <li>RG146 Compllant Investments</li>
+                <li>RG146 Compllant SMSF(Accountants Exemption)</li>
+                <li>Accounting & Bookkepping Courses</li>
+                <li>Certificate IV in AccountingCertificate IV in Bookkepping</li>
+                <li>BAS and Payroll</li>
+                <li>MYOB TrainingDual Quallifications</li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <span>Information</span>
+            <ul>
+                <li>Goverment funding</li>
+                <li>Enrol Now</li>
+                <li>Why Us</li>
+                <li>Student Info</li>
+                <li>Blog</li>
+                <li>Contact Us</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <span>Contact Us</span>
+                <ul>
+                    <li>Phone 1300 555 555</li>
+                    <li>Fax 03 9614 5555</li>
+                    <li>Email admin@youremail.com</li>
+                    <li>Postal Address</li>
+                    <li>28 Postal Street</li>
+                    <li>Suburb, Melbourn</li>
+                    <li>Australlia</li>
+                </ul>
+            </div>
+            <div>
+                <div>
+                    <a href="tel:130-055-5555"><img src="~/Content/Images/icon-phone.png" alt="Calling"/></a>
+                </div>
+                <div>
+                    <span>1300 555 555</span>
+                </div>
+            </div>   
+        </div>
+    </div>
+    <div id="bottom-footer" class="row">
+        <input type="hidden" value="@System.Globalization.CultureInfo.CurrentCulture.Name" data-is-current-culture="true" />
+        <div class="col-md-9 hidden-xs hidden-sm">
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do elusmod tempor</span>         
+        </div>
+        <div class="col-md-3">
+            @using (Html.BeginForm("ChangeCulture", "Culture"))
+            {
+                <div class="row">
+                    <div class="col-md-7 col-xs-5 col-sm-7">
+                        <select name="lang" class="form-control">
+                            <option value="ru">Русский</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-xs-4 col-sm-4">
+                        <input class="btn-orange" type="submit" name="submit" value="@Resource.Choose">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</footer>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/bootstrap-select")
+@RenderSection("scripts", false)
+<script src="~/Scripts/Custom/layout.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+﻿@using System.Web.Script.Serialization
+@using GameStore.WebUI.ViewModels.Game
+@using Resources
+@model GamesViewModel
+@{
+    ViewBag.Title = Resource.Games;
+}
+
+@helper SelectList(Enum value)
+{
+    foreach (var item in Enum.GetValues(value.GetType()))
+    {
+        int number = (int)item;
+        string enumMember = item.ToString();
+        if (value.ToString() == item.ToString())
+        {
+            <option value="@number" selected="selected">@Resource.ResourceManager.GetString(enumMember)</option>
+        }
+        else
+        {
+            <option value="@number">@Resource.ResourceManager.GetString(enumMember)</option>
+        }
+    }
+}
+
+@helper ShowGame(ShortGameViewModel game)
+{
+    <div class="item-box">
+        <dl>
+            <dt>@Resource.Name</dt>
+            <dd>@game.Name</dd>
+
+            <dt>@Resource.Price</dt>
+            <dd>@game.Price</dd>
+        </dl>
+
+        @Html.ActionLink(Resource.Details, "GetGameByKey", new { Controller = "Game", gameKey = game.Key }) <br />
+
+        @if (User.IsInRole("Manager"))
+        {
+            @Html.ActionLink(Resource.Edit, "Update", new { Controller = "Game", gameKey = game.Key })
+            <br />
+            @Html.ActionLink(Resource.Remove, "Remove", new { Controller = "Game", gameKey = game.Key })
+            <br />
+        }
+
+    </div>
+}
+
+<button class="btn-blue hidden-md hidden-lg" data-toggle="collapse" data-target="#leftPanel">@Resource.Show</button>
+<div id="leftPanel" class="col-md-4 col-sm-12 col-xs-12 collapse">
+    @using (Html.BeginForm("GetAll", "Game", FormMethod.Get, new {id = "filterForm"}))
+    {
+        @Html.HiddenFor(m => m.PageInfo.PageNumber, new {data_is_page_number_control = true})
+
+        string jsonResource = new JavaScriptSerializer().Serialize(Model.Resource);
+        <input type="text" hidden="hidden" value=@jsonResource id ="resource-id" />
+        <input type="text" hidden="hidden" value=@User.IsInRole("Manager").ToString() id="is-in-manager-role" />
+
+        <label for="PageInfo_PageSize">@Resource.GamesOnPage</label><br/>
+        <select id="PageInfo_PageSize" name="PageInfo.PageSize" class="form-control">
+            @SelectList(Model.PageInfo.PageSize)
+        </select><br/><br/>
+
+        <label for="GameName">@Resource.SearchByName</label><br/>
+        @Html.EditorFor(m => m.GameName, new {htmlAttributes = new {@class = "form-control"}})<br/>
+        @Html.ValidationMessageFor(m => m.GameName)<br/>
+
+        <label for="SortingObject">@Resource.Sorting</label><br/>
+        <select id="SortingObject" name="SortingObject" class="form-control">
+            @SelectList(Model.SortingObject)
+        </select><br/><br/>
+
+        <span>@Resource.PublishedFor</span>
+        <div class="radio">
+            <label>@Html.RadioButtonFor(m => m.PublishingDatePeriod, "AllTime", new {required = "required", @checked = "checked"}) @Resource.AllTime</label><br/>
+        </div>
+        <div class="radio">
+            <label>@Html.RadioButtonFor(m => m.PublishingDatePeriod, "LastWeek", new {required = "required"}) @Resource.LastWeek</label><br/>
+        </div>
+        <div class="radio">
+            <label>@Html.RadioButtonFor(m => m.PublishingDatePeriod, "LastMonth", new {required = "required"}) @Resource.LastMonth</label><br/>
+        </div>
+        <div class="radio">
+            <label>@Html.RadioButtonFor(m => m.PublishingDatePeriod, "LastYear", new {required = "required"}) @Resource.LastYear</label><br/>
+        </div>
+        <div class="radio">
+            <label>@Html.RadioButtonFor(m => m.PublishingDatePeriod, "TwoYears", new {required = "required"}) @Resource.TwoYears</label><br/>
+        </div>
+        <div class="radio">
+            <label>@Html.RadioButtonFor(m => m.PublishingDatePeriod, "ThreeYears", new {required = "required"}) @Resource.ThreeYears</label><br/><br/>
+        </div>
+
+        <span>@Resource.PriceRange</span><br/>
+        @Html.LabelFor(m => m.MinPrice)<span>&ensp;</span><br/>
+        @Html.TextBoxFor(m => m.MinPrice, new {type = "number", @class = "form-control"})<br/>
+        @Html.ValidationMessageFor(m => m.MinPrice)<br/>
+
+        @Html.LabelFor(m => m.MaxPrice)<span>&ensp;</span><br/>
+        @Html.TextBoxFor(m => m.MaxPrice, new {type = "number", @class = "form-control"})<br/>
+        @Html.ValidationMessageFor(m => m.MaxPrice)<br/>
+
+        <span>@Resource.Genres</span><br/>
+        foreach (var genre in Model.Genres)
+        {
+            <input type="checkbox" name="SelectedGenresIds" value="@genre.Id"
+                   @if (Model.SelectedGenresIds.Contains(genre.Id))
+                   {
+                       <text> checked='checked' </text>
+                   }/>
+            <span class="checkbox-value">@genre.Name</span><br/>
+        }
+
+        <br/>
+        <span>@Resource.PlatformTypes</span><br/>
+        foreach (var pt in Model.PlatformTypes)
+        {
+            <input type="checkbox" name="SelectedPlatformTypesIds" value="@pt.Id"
+                   @if (Model.SelectedPlatformTypesIds.Contains(pt.Id))
+                   {
+                       <text> checked='checked' </text>
+                   }/>
+            <span class="checkbox-value">@pt.Type</span><br/>
+        }
+
+        <br/>
+        <span>@Resource.Publishers</span><br/>
+        foreach (var publisher in Model.Publishers)
+        {
+            <input type="checkbox" name="SelectedPublishersIds" value="@publisher.Id"
+                   @if (Model.SelectedPublishersIds.Contains(publisher.Id))
+                   {
+                       <text> checked='checked' </text>
+                   }/>
+            <span class="checkbox-value">@publisher.CompanyName</span><br/>
+        }
+
+        <br/>
+
+        <input class="btn-orange" type="submit" id="filter" value=@Resource.Filter />
+    }
+</div>
+
+<div class="col-md-8">
+    @if (User.IsInRole("Manager"))
+    {
+        @Html.ActionLink(Resource.New, "New", null, new { @class = "btn-orange col-md-12 col-xs-12 col-sm-12 create-btn" })
+    }       
+    
+    <div id="game-container" class="flex-container" data-div="2">
+        @foreach (ShortGameViewModel game in Model.Games)
+        {
+            @ShowGame(game)
+        }
+    </div>
+
+    <div id="pagination-panel" class="row">
+        <div class="btn-group dinamicContainer">
+            @for (var i = 1; i <= Model.PageInfo.TotalPages; i++)
+            {
+                if (Model.PageInfo.PageNumber == i)
+                {
+                    <span class="selected btn-primary btn-orange">@i</span>
+                }
+                else
+                {
+                    <button class="btn-blue" type="submit" form="filterForm" data-is-pagination-button="true">@i</button>
+                }
+            }
+        </div>
+    </div>
+</div>       
+
+@section middleHeader
+{
+    <div id="middle-header" class="row hidden-xs hidden-sm">
+        <div>
+            <span>Reach your limits</span>
+            <br /><br />
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do elusmod tempor</span>
+        </div>
+        <img id="mountain-photo" src="~/Content/Images/mountain-photo.png" alt="Mountain"/>
+    </div>
+}
+
+@section bottomHeader
+{
+<div id="bottom-header" class="row hidden-xs hidden-sm">
+    <div class="col-md-6">
+        <p>
+            Choose from a range of great products and recornized certificate and diploma courses.
+            <span class="underlined-text">Enrol Online Now</span>
+        </p>
+    </div>
+    <div class="col-md-1">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </div>
+    <div class="col-md-5">
+        <form class="form-contact-us">
+            <span>Contact us Today</span><br />
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do elusmod tempor</span><br />
+            <br /><br />
+
+            <label for="input-your-name">@Resource.YourName</label><br />
+            <input type="text" id="input-your-name" class="form-control" /><br />
+
+            <label for="input-contact-number">@Resource.ContactNumber</label><br />
+            <input type="text" id="input-contact-number" class="form-control" /><br />
+
+            <input type="submit" class="btn-orange" value="@Resource.CallMeBack" />
+        </form>
+    </div>
+</div>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/Custom/getAllGames.js"></script> 
+    <script src="~/Scripts/Custom/serializedFilterForm.js"></script>   
+}
+
+@section styles
+{  
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}

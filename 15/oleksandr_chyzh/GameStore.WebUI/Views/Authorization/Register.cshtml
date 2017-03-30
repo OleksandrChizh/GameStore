@@ -1,0 +1,25 @@
+﻿@model GameStore.WebUI.ViewModels.User.RegisterViewModel
+@using Resources
+
+@{
+    ViewBag.Title = Resource.Registration;
+}
+
+<div class="row form-container">
+    @using (Html.BeginForm("Register", "Authorization"))
+    {
+        @Html.LabelFor(m => m.Email)<br />
+        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Email)<br />
+
+        @Html.LabelFor(m => m.Password)<br />
+        @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Password)<br />
+
+        @Html.LabelFor(m => m.ConfirmPassword)<br />
+        @Html.EditorFor(m => m.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.ConfirmPassword)<br /><br />
+
+        <input class="btn-orange" type="submit" value=@Resource.Register />
+    }
+</div>

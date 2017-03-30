@@ -1,0 +1,51 @@
+﻿@model GameStore.WebUI.ViewModels.Game.CreateGameViewModel
+
+@Html.ValidationSummary(true)
+
+@Html.LabelFor(m => m.Key)<br/>
+@Html.EditorFor(m => m.Key, new { htmlAttributes = new { @class = "form-control" }})<br />
+@Html.ValidationMessageFor(m => m.Key)<br/>
+
+@Html.LabelFor(m => m.Name)<br />
+@Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })<br />
+@Html.ValidationMessageFor(m => m.Name)<br />
+
+@Html.LabelFor(m => m.Description)<br />
+@Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "5" })<br />
+@Html.ValidationMessageFor(m => m.Description)<br />
+
+@Html.LabelFor(m => m.Price)<br />
+@Html.EditorFor(m => m.Price, new { htmlAttributes = new { @class = "form-control" } })<br />
+@Html.ValidationMessageFor(m => m.Price)<br />
+
+@Html.LabelFor(m => m.UnitsInStock)<br />
+@Html.EditorFor(m => m.UnitsInStock, new { htmlAttributes = new { @class = "form-control" } })<br /><br />
+
+@Html.LabelFor(m => m.Discounted)<br />
+@Html.EditorFor(m => m.Discounted)<br /><br />
+
+@Html.LabelFor(m => m.PublishingDate)<br />
+@Html.EditorFor(m => m.PublishingDate, new { htmlAttributes = new { @class = "form-control", pattern = @"^(\d{2}\.){2}\d{4}$", placeholder = "dd.mm.yyyy" } })<br />
+@Html.ValidationMessageFor(m => m.PublishingDate)<br />
+
+@Html.LabelFor(m => m.GenresIds)<br />
+@Html.ListBoxFor(m => m.GenresIds, Model.Genres, new { @class = "selectpicker" })<br />
+@Html.ValidationMessageFor(m => m.GenresIds)<br />
+
+@Html.LabelFor(m => m.PlatformTypesIds)<br />
+@Html.ListBoxFor(m => m.PlatformTypesIds, Model.PlatformTypes, new { @class = "selectpicker" })<br />
+@Html.ValidationMessageFor(m => m.PlatformTypesIds)<br />
+
+@Html.LabelFor(m => m.PublishersIds)<br />
+@Html.ListBoxFor(m => m.PublishersIds, Model.Publishers, new { @class = "selectpicker" })<br /><br />
+
+@Html.LabelFor(m => m.IsContainEnglishTranslation)<br />
+@Html.EditorFor(m => m.IsContainEnglishTranslation)<br />
+
+@Html.LabelFor(m => m.EnglishName)<br />
+@Html.EditorFor(m => m.EnglishName, new { htmlAttributes = new { @class = "form-control" } })<br />
+@Html.ValidationMessageFor(m => m.EnglishName)<br />
+
+@Html.LabelFor(m => m.Description)<br />
+@Html.TextAreaFor(m => m.EnglishDescription, new { @class = "form-control", rows = "5" })<br />
+@Html.ValidationMessageFor(m => m.EnglishDescription)<br /><br />

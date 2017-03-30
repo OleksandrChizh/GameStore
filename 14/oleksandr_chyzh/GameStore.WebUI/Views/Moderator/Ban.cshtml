@@ -1,0 +1,20 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.User.BanUserViewModel
+@{
+    ViewBag.Title = "Ban";
+}
+
+<div class="display-form">
+    <h2>@Resource.BanForUser: @Model.UserName</h2>
+</div>
+
+<div class="form-container">
+    @using (Html.BeginForm("Ban", "Moderator", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.UserName)
+
+        @Html.EnumDropDownListFor(m => m.Duration, new { @class = "form-control" })<br />
+
+        <input class="btn-orange" type="submit" value="Ban" />
+    }
+</div>

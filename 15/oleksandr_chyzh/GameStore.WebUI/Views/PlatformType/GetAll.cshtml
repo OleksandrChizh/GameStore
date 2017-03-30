@@ -1,0 +1,29 @@
+﻿@using Resources
+@model List<GameStore.WebUI.ViewModels.PlatformType.PlatformTypeViewModel>
+
+@{
+    ViewBag.Title = Resource.PlatformTypes;
+}
+
+<div class="row">
+    @Html.ActionLink(Resource.Create, "New", new { Controller = "PlatformType"}, new { @class = "btn-orange create-btn col-md-12 col-xs-12 col-sm-12" })
+</div>
+
+<div class="flex-container" data-div="3">
+    @foreach (var platformType in Model)
+    {
+        <div class="item-box">
+            <dl>
+                <dt>@Resource.Name</dt>
+                <dd>@platformType.Type</dd>
+            </dl>
+
+            @Html.ActionLink(Resource.Delete, "Delete", new { Controller = "PlatformType", id = platformType.Id })<br />
+        </div>
+    }
+</div>
+
+@section styles
+{
+    <link href="~/Content/CustomStyles/item.css" rel="stylesheet" />
+}

@@ -1,0 +1,43 @@
+﻿@using GameStore.WebUI.Models
+@using Resources
+@model GameStore.WebUI.ViewModels.Basket.VisaPaymentViewModel
+@{
+    ViewBag.Title = Resource.Visa;
+}
+
+<div class="row form-container">
+    @using (Html.BeginForm("MakeRequestToBank", "Basket"))
+    {                  
+        @Html.ValidationSummary(true)<br />
+
+        @Html.LabelFor(m => m.CardNumber)<br />
+        @Html.EditorFor(m => m.CardNumber, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.CardNumber)<br /><br />
+
+        @Html.LabelFor(m => m.CartHoldersName)<br />
+        @Html.EditorFor(m => m.CartHoldersName, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.CartHoldersName)<br /><br />
+
+        @Html.LabelFor(m => m.CVV2)<br />
+        @Html.EditorFor(m => m.CVV2, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.CVV2)<br /><br />
+
+        @Html.LabelFor(m => m.ExpireDate)<br />
+        @Html.EditorFor(m => m.ExpireDate, new { htmlAttributes = new { @class = "form-control", placeholder = "mm/yy" } })<br />
+        @Html.ValidationMessageFor(m => m.ExpireDate)<br /><br />
+
+        @Html.LabelFor(m => m.ConfirmationType)<br />
+        @Html.RadioButtonFor(m => m.ConfirmationType, ConfirmationType.UsingEmail)<span> @Resource.Email</span><br />
+        @Html.RadioButtonFor(m => m.ConfirmationType, ConfirmationType.UsingPhoneNumber)<span> @Resource.PhoneNumber</span><br /><br />
+
+        @Html.LabelFor(m => m.Email)<br />
+        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.Email)<br /><br />
+
+        @Html.LabelFor(m => m.PhoneNumber)<br />
+        @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })<br />
+        @Html.ValidationMessageFor(m => m.PhoneNumber)<br /><br />
+
+        <input type="submit" value=@Resource.Pay class="btn-orange" />
+    }
+</div>

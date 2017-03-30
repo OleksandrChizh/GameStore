@@ -1,0 +1,16 @@
+﻿@using Resources
+@model GameStore.WebUI.ViewModels.Game.CreateGameViewModel
+
+@{
+    ViewBag.Title = Resource.GameCreating;
+}
+
+<div class="form-container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.EditorForModel()
+
+        <input class="btn-orange" type="submit" value=@Resource.Create />
+    }
+</div>
